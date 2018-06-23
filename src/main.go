@@ -21,7 +21,7 @@ func main() {
 		log.Fatal(err)
 	}
 	scanner := bufio.NewScanner(strings.NewReader(string(content)))
-	m, _ := NewMap(6)
+	m := NewMap()
 	for scanner.Scan() {
 		c := Parse(scanner.Text())
 		m.Run(c)

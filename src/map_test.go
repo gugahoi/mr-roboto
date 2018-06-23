@@ -10,45 +10,21 @@ import (
 func TestNewMap(t *testing.T) {
 	testCases := []struct {
 		desc string
-		size int
-		err  bool
 	}{
 		{
-			desc: "create a new map of size 0",
-			size: 0,
-			err:  true,
-		},
-		{
-			desc: "create a new map of size 10",
-			size: 10,
-			err:  false,
-		},
-		{
-			desc: "create a new map of size -1",
-			size: -1,
-			err:  true,
+			desc: "create a new map",
 		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			m, err := NewMap(tC.size)
-
-			if tC.err {
-				if err == nil {
-					t.Fatalf("Expected error to be thrown but got none")
-				}
-			} else {
-				if m.Size != tC.size {
-					t.Fatalf("Map created with wrong dimensions: expected '%v', got %v", tC.size, m.Size)
-				}
-			}
+			m := NewMap()
+			_ = m
 		})
 	}
 }
 
 func TestMap_AddPlayer(t *testing.T) {
 	m := Map{
-		Size:    10,
 		Players: []*Player{},
 	}
 
@@ -67,7 +43,6 @@ func TestMap_AddPlayer(t *testing.T) {
 
 func TestMap_AddSamePlayer(t *testing.T) {
 	m := Map{
-		Size:    10,
 		Players: []*Player{},
 	}
 
@@ -86,7 +61,7 @@ func TestMap_AddSamePlayer(t *testing.T) {
 }
 
 func ExampleMap_String() {
-	m, _ := NewMap(10)
+	m := NewMap()
 	m.AddPlayer(NewPlayer("Joe", 0, 0, East))
 	m.AddPlayer(NewPlayer("Mary", 1, 0, West))
 	m.AddPlayer(NewPlayer("Moses", 5, 2, North))
@@ -99,7 +74,7 @@ func ExampleMap_String() {
 }
 
 func TestMap_Run(t *testing.T) {
-	m, _ := NewMap(6)
+	m := NewMap()
 	c := Command{Action: "PLACE", Args: []string{"0", "0", "EAST"}, Name: "DAVE"}
 	m.Run(c)
 

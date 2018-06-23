@@ -1,14 +1,12 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"log"
 )
 
-// Map represents the map of a specific size and contains the players in the game
+// Map contains the players in the game
 type Map struct {
-	Size    int
 	Players []*Player
 }
 
@@ -28,15 +26,10 @@ type Map struct {
 //                SOUTH
 
 // NewMap creates a new map of given size (square map)
-func NewMap(size int) (*Map, error) {
-	if size < 1 {
-		return nil, errors.New("InvalidMapSize: map size must be bigger than 0")
-	}
-
+func NewMap() *Map {
 	return &Map{
-		Size:    size,
 		Players: []*Player{},
-	}, nil
+	}
 }
 
 // AddPlayer adds a new player to the map, unless a player of same name already exists
