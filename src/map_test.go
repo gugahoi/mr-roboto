@@ -1,6 +1,7 @@
 package main_test
 
 import (
+	"fmt"
 	"testing"
 
 	. "github.com/gugahoi/mr-roboto/src"
@@ -82,4 +83,17 @@ func TestAddSamePlayer(t *testing.T) {
 	if size := len(m.Players); size != 1 {
 		t.Fatalf("Expected to have %v players, got %v", 1, size)
 	}
+}
+
+func ExampleMap_String() {
+	m, _ := NewMap(10)
+	m.AddPlayer(NewPlayer("Joe", 0, 0, "EAST"))
+	m.AddPlayer(NewPlayer("Mary", 1, 0, "WEST"))
+	m.AddPlayer(NewPlayer("Moses", 5, 2, "NORTH"))
+
+	fmt.Print(m)
+	// Output:
+	// Joe: 0,0,EAST
+	// Mary: 1,0,WEST
+	// Moses: 5,2,NORTH
 }

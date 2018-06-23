@@ -15,10 +15,16 @@ func TestNewPlayer(t *testing.T) {
 
 	p := NewPlayer(name, x, y, direction)
 	if p.Name != name {
-		t.Fatalf("Expected player name to be '%v', got '%v'", name, p.Name)
+		t.Errorf("Expected player name to be '%v', got '%v'", name, p.Name)
+	}
+	if p.Pos.X != x {
+		t.Errorf("Expected player x coordinate to be '%v', got '%v'", x, p.Pos.X)
+	}
+	if p.Pos.Y != y {
+		t.Errorf("Expected player y coordinate to be '%v', got '%v'", y, p.Pos.Y)
 	}
 	if p.Direction != direction {
-		t.Fatalf("Expected player direction to be '%v', got '%v'", direction, p.Direction)
+		t.Errorf("Expected player direction to be '%v', got '%v'", direction, p.Direction)
 	}
 }
 
@@ -112,10 +118,8 @@ func TestPlayer_Rotate(t *testing.T) {
 	}
 }
 
-func TestPlayer_String(t *testing.T) {
-	p := NewPlayer("Harry", 0, 0, "WEST")
-	expected := "Harry: 0,0,WEST"
-	if p.String() != expected {
-		t.Fatalf("Expected string to be: \n%v\n got: \n%v\n", expected, p.String())
-	}
+func ExampleTestPlayer_String() {
+	fmt.Print(NewPlayer("Harry", 0, 0, "WEST"))
+	// Output:
+	// Harry: 0,0,WEST
 }
