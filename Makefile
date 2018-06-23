@@ -6,7 +6,10 @@ all: test
 test:
 	go test -v ./...
 
-build:
+clean:
+	rm -rf build/
+
+build: clean
 	go build -o build/mr-roboto ./...
 
 docker-build:
