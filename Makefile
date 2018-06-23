@@ -4,7 +4,7 @@ TAG ?= latest
 all: test
 
 test:
-	go test -v ./...
+	go test -cover -v ./...
 
 clean:
 	rm -rf build/
