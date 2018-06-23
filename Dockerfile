@@ -14,4 +14,5 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /build/mr-roboto -a -ldflags '-extldfla
 
 FROM scratch
 COPY --from=builder /build/mr-roboto /app
+COPY fixtures /
 ENTRYPOINT [ "/app" ]
