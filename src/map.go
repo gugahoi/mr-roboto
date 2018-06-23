@@ -2,12 +2,11 @@ package main
 
 import (
 	"fmt"
-	"log"
 )
 
 // Map contains the players in the game
 type Map struct {
-	Players []*Player
+	Players [6][6]*Player
 }
 
 // Map Layout (x,y)
@@ -28,26 +27,28 @@ type Map struct {
 // NewMap creates a new map of given size (square map)
 func NewMap() *Map {
 	return &Map{
-		Players: []*Player{},
+		Players: [6][6]*Player{},
 	}
 }
 
 // AddPlayer adds a new player to the map, unless a player of same name already exists
-func (m *Map) AddPlayer(p *Player) {
+func (m *Map) AddPlayer(p *Player) error {
 	if m.FindPlayerByName(p.Name) != nil {
-		log.Printf("Player %v already in map, skipping\n", p)
-		return
+		return fmt.Errorf("player %v already in map, skipping", p)
 	}
 
-	m.Players = append(m.Players, p)
+	m.Players[p.Pos.X][p.Pos.Y] = p
+	return nil
 }
 
 // FindPlayerByName returns the player if the player with the given name
 // has already been placed in the map
 func (m *Map) FindPlayerByName(name string) *Player {
-	for _, player := range m.Players {
-		if player.Name == name {
-			return player
+	for _, row := range m.Players {
+		for _, player := range row {
+			if player != nil && player.Name == name {
+				return player
+			}
 		}
 	}
 	return nil
@@ -55,8 +56,12 @@ func (m *Map) FindPlayerByName(name string) *Player {
 
 func (m *Map) String() string {
 	var s string
-	for _, p := range m.Players {
-		s += fmt.Sprintln(p)
+	for _, row := range m.Players {
+		for _, player := range row {
+			if player != nil {
+				s += fmt.Sprintln(player)
+			}
+		}
 	}
 	return s
 }

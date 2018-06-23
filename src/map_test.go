@@ -25,7 +25,7 @@ func TestNewMap(t *testing.T) {
 
 func TestMap_AddPlayer(t *testing.T) {
 	m := Map{
-		Players: []*Player{},
+		Players: [6][6]*Player{},
 	}
 
 	p := NewPlayer(
@@ -35,28 +35,14 @@ func TestMap_AddPlayer(t *testing.T) {
 		East,
 	)
 
-	m.AddPlayer(p)
-	if size := len(m.Players); size != 1 {
-		t.Fatalf("Expected to have %v players, got %v", 1, size)
-	}
-}
-
-func TestMap_AddSamePlayer(t *testing.T) {
-	m := Map{
-		Players: []*Player{},
+	err := m.AddPlayer(p)
+	if err != nil {
+		t.Fatalf("Expected player to be added, got err '%v'", err)
 	}
 
-	p := NewPlayer(
-		"Mary",
-		0,
-		0,
-		East,
-	)
-
-	m.AddPlayer(p)
-	m.AddPlayer(p)
-	if size := len(m.Players); size != 1 {
-		t.Fatalf("Expected to have %v players, got %v", 1, size)
+	err = m.AddPlayer(p)
+	if err == nil {
+		t.Fatalf("Expected not to be able to add player, did not get err")
 	}
 }
 
