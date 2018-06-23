@@ -113,16 +113,9 @@ func TestRotate(t *testing.T) {
 }
 
 func TestString(t *testing.T) {
-	testCases := []struct {
-		desc string
-	}{
-		{
-			desc: "",
-		},
-	}
-	for _, tC := range testCases {
-		t.Run(tC.desc, func(t *testing.T) {
-
-		})
+	p := objects.NewPlayer("Harry", 0, 0, "WEST")
+	expected := "Harry: 0,0,WEST"
+	if p.String() != expected {
+		t.Fatalf("Expected string to be: \n%v\n got: \n%v\n", expected, p.String())
 	}
 }

@@ -81,3 +81,8 @@ func (p *Player) Rotate(to string) {
 func (p *Player) String() string {
 	return fmt.Sprintf("%s: %d,%d,%s", p.Name, p.Pos.X, p.Pos.Y, p.Direction)
 }
+
+// Report prints the player information
+func (p *Player) Report() {
+	fmt.Println(p)
+}
