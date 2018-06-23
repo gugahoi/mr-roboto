@@ -9,22 +9,6 @@ type Position struct {
 	X, Y int
 }
 
-// Direction indicates where a player is facing
-type Direction string
-
-const (
-	// Uknown is the default direction
-	Uknown Direction = ""
-	// North direction
-	North Direction = "NORTH"
-	// East direction
-	East = "EAST"
-	// South direction
-	South = "SOUTH"
-	// West direction
-	West = "WEST"
-)
-
 // Player represents a player in the map with name, position and direction it is facing
 type Player struct {
 	Name      string

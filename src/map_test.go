@@ -46,7 +46,7 @@ func TestNewMap(t *testing.T) {
 	}
 }
 
-func TestAddPlayer(t *testing.T) {
+func TestMap_AddPlayer(t *testing.T) {
 	m := Map{
 		Size:    10,
 		Players: []*Player{},
@@ -56,7 +56,7 @@ func TestAddPlayer(t *testing.T) {
 		"Mary",
 		0,
 		0,
-		"EAST",
+		East,
 	)
 
 	m.AddPlayer(p)
@@ -65,7 +65,7 @@ func TestAddPlayer(t *testing.T) {
 	}
 }
 
-func TestAddSamePlayer(t *testing.T) {
+func TestMap_AddSamePlayer(t *testing.T) {
 	m := Map{
 		Size:    10,
 		Players: []*Player{},
@@ -75,7 +75,7 @@ func TestAddSamePlayer(t *testing.T) {
 		"Mary",
 		0,
 		0,
-		"EAST",
+		East,
 	)
 
 	m.AddPlayer(p)
@@ -87,13 +87,43 @@ func TestAddSamePlayer(t *testing.T) {
 
 func ExampleMap_String() {
 	m, _ := NewMap(10)
-	m.AddPlayer(NewPlayer("Joe", 0, 0, "EAST"))
-	m.AddPlayer(NewPlayer("Mary", 1, 0, "WEST"))
-	m.AddPlayer(NewPlayer("Moses", 5, 2, "NORTH"))
+	m.AddPlayer(NewPlayer("Joe", 0, 0, East))
+	m.AddPlayer(NewPlayer("Mary", 1, 0, West))
+	m.AddPlayer(NewPlayer("Moses", 5, 2, North))
 
 	fmt.Print(m)
 	// Output:
 	// Joe: 0,0,EAST
 	// Mary: 1,0,WEST
 	// Moses: 5,2,NORTH
+}
+
+func TestMap_Run(t *testing.T) {
+	m, _ := NewMap(6)
+	c := Command{Action: "PLACE", Args: []string{"0", "0", "EAST"}, Name: "DAVE"}
+	m.Run(c)
+
+	p := m.FindPlayerByName("DAVE")
+	if p == nil {
+		t.Fatal("Expected to find player 'DAVE' but didn't")
+	}
+	if p.Pos.X != 0 {
+		t.Fatalf("Expected player 'DAVE' to be at x coordinate '0', found '%v", p.Pos.X)
+	}
+	if p.Pos.Y != 0 {
+		t.Fatalf("Expected player 'DAVE' to be at Y coordinate '0', found '%v", p.Pos.Y)
+	}
+	// TODO: fix this direction
+	if p.Direction != East {
+		t.Fatalf("Expected player 'DAVE' to be facing '%v', found '%v", East, p.Direction)
+	}
+
+	c = Command{Action: "MOVE", Name: "DAVE"}
+	m.Run(c)
+	c = Command{Action: "REPORT", Name: "DAVE"}
+	m.Run(c)
+	c = Command{Action: "LEFT", Name: "DAVE"}
+	m.Run(c)
+	c = Command{Action: "RIGHT", Name: "DAVE"}
+	m.Run(c)
 }

@@ -10,7 +10,7 @@ ADD Gopkg.* ./
 RUN dep ensure -vendor-only
 
 ADD . .
-RUN CGO_ENABLED=0 GOOS=linux go build -o /build/mr-roboto -a -ldflags '-extldflags "-static"' .
+RUN CGO_ENABLED=0 GOOS=linux go build -o /build/mr-roboto -a -ldflags '-extldflags "-static"' ./src/
 
 FROM scratch
 COPY --from=builder /build/mr-roboto /app

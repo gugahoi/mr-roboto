@@ -52,7 +52,7 @@ func TestPlayer_Move(t *testing.T) {
 		t.Fatalf("Expected player to have moved west, position is: %v x %v", p.Pos.X, p.Pos.Y)
 	}
 
-	p.Direction = "NOT VALID"
+	p.Direction = Uknown
 	err := p.Move()
 	if err == nil {
 		t.Fatal("Expected invalid direction error, got nil")

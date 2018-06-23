@@ -67,3 +67,17 @@ func (m *Map) String() string {
 	}
 	return s
 }
+
+// Run runs a given command from the current state of the map
+func (m *Map) Run(c Command) {
+	switch c.Action {
+	case "PLACE":
+		m.AddPlayer(NewPlayer(c.Name, 0, 0, StringToDirection(c.Args[2])))
+	case "REPORT":
+		m.FindPlayerByName(c.Name).Report()
+	case "MOVE":
+		m.FindPlayerByName(c.Name).Move()
+	case "LEFT", "RIGHT":
+		m.FindPlayerByName(c.Name).Rotate(c.Action)
+	}
+}
