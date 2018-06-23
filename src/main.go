@@ -2,25 +2,22 @@ package main
 
 import (
 	"bufio"
-	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"os"
 	"strings"
 )
 
-func init() {
-	if len(os.Args) != 2 {
-		usage()
-	}
-}
-
 func main() {
-	content, err := ioutil.ReadFile(os.Args[1])
-	if err != nil {
-		log.Fatal(err)
+	// set up input
+	var i string
+	if len(os.Args) == 2 {
+		i = os.Args[1]
 	}
-	scanner := bufio.NewScanner(strings.NewReader(string(content)))
+	scanner := bufio.NewScanner(input(i))
+
+	// run the game
 	m := NewMap()
 	for scanner.Scan() {
 		c := Parse(scanner.Text())
@@ -28,9 +25,13 @@ func main() {
 	}
 }
 
-func usage() {
-	fmt.Fprintf(os.Stderr, `Usage:
-	%s path/to/file.txt
-`, os.Args[0])
-	os.Exit(0)
+func input(file string) io.Reader {
+	if file != "" {
+		content, err := ioutil.ReadFile(file)
+		if err != nil {
+			log.Fatal(err)
+		}
+		return strings.NewReader(string(content))
+	}
+	return os.Stdin
 }
