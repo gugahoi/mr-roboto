@@ -16,6 +16,7 @@ const (
 	West
 )
 
+// StringToDirection converts a string into a direction enum
 func StringToDirection(d string) Direction {
 	switch d {
 	case "NORTH":

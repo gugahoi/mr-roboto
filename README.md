@@ -5,3 +5,10 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/gugahoi/mr-roboto)](https://goreportcard.com/report/github.com/gugahoi/mr-roboto)
 
 The robot dance
+
+Running:
+
+```bash
+> docker run -v $(pwd)/testdata/:/data/ gugahoi/mr-roboto:latest /data/example1.txt
+ALICE: 0,1,NORTH
+```
