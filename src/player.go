@@ -9,34 +9,50 @@ type Position struct {
 	X, Y int
 }
 
+// Direction indicates where a player is facing
+type Direction string
+
+const (
+	// Uknown is the default direction
+	Uknown Direction = ""
+	// North direction
+	North Direction = "NORTH"
+	// East direction
+	East = "EAST"
+	// South direction
+	South = "SOUTH"
+	// West direction
+	West = "WEST"
+)
+
 // Player represents a player in the map with name, position and direction it is facing
 type Player struct {
 	Name      string
 	Pos       Position
-	Direction string
+	Direction Direction
 }
 
 // NewPlayer creates a new player with appropriate properties
-func NewPlayer(name string, x int, y int, direction string) *Player {
+func NewPlayer(name string, x int, y int, d Direction) *Player {
 	return &Player{
 		name,
 		Position{x, y},
-		direction,
+		d,
 	}
 }
 
 // Move moves the player in the direction set
-// x coordinate is west -> east incrementally
-// y coordinate is south -> north incrementally
+// x coordinate is West -> East incrementally
+// y coordinate is South -> North incrementally
 func (p *Player) Move() error {
 	switch p.Direction {
-	case "NORTH":
+	case North:
 		p.Pos.Y++
-	case "EAST":
+	case East:
 		p.Pos.X++
-	case "SOUTH":
+	case South:
 		p.Pos.Y--
-	case "WEST":
+	case West:
 		p.Pos.X--
 	default:
 		return fmt.Errorf("cannot move in this direction: %v", p.Direction)
@@ -47,33 +63,33 @@ func (p *Player) Move() error {
 // Rotate changes the direction the player is facing
 func (p *Player) Rotate(to string) {
 	switch p.Direction {
-	case "NORTH":
+	case North:
 		switch to {
 		case "LEFT":
-			p.Direction = "WEST"
+			p.Direction = West
 		case "RIGHT":
-			p.Direction = "EAST"
+			p.Direction = East
 		}
-	case "EAST":
+	case East:
 		switch to {
 		case "LEFT":
-			p.Direction = "NORTH"
+			p.Direction = North
 		case "RIGHT":
-			p.Direction = "SOUTH"
+			p.Direction = South
 		}
-	case "SOUTH":
+	case South:
 		switch to {
 		case "LEFT":
-			p.Direction = "EAST"
+			p.Direction = East
 		case "RIGHT":
-			p.Direction = "WEST"
+			p.Direction = West
 		}
-	case "WEST":
+	case West:
 		switch to {
 		case "LEFT":
-			p.Direction = "SOUTH"
+			p.Direction = South
 		case "RIGHT":
-			p.Direction = "NORTH"
+			p.Direction = North
 		}
 	}
 }

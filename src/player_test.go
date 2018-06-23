@@ -11,7 +11,7 @@ func TestNewPlayer(t *testing.T) {
 	name := "Mary"
 	x := 5
 	y := 5
-	direction := "EAST"
+	var direction Direction = East
 
 	p := NewPlayer(name, x, y, direction)
 	if p.Name != name {
@@ -29,24 +29,24 @@ func TestNewPlayer(t *testing.T) {
 }
 
 func TestPlayer_Move(t *testing.T) {
-	p := NewPlayer("Shish", 0, 0, "NORTH")
+	p := NewPlayer("Shish", 0, 0, North)
 
 	p.Move()
 	if p.Pos.Y != 1 {
 		t.Fatalf("Expected player to have moved north, position is: %v x %v", p.Pos.X, p.Pos.Y)
 	}
 
-	p.Direction = "EAST"
+	p.Direction = East
 	p.Move()
 	if p.Pos.X != 1 {
 		t.Fatalf("Expected player to have moved west, position is: %v x %v", p.Pos.X, p.Pos.Y)
 	}
-	p.Direction = "SOUTH"
+	p.Direction = South
 	p.Move()
 	if p.Pos.Y != 0 {
 		t.Fatalf("Expected player to have moved south, position is: %v x %v", p.Pos.X, p.Pos.Y)
 	}
-	p.Direction = "WEST"
+	p.Direction = West
 	p.Move()
 	if p.Pos.X != 0 {
 		t.Fatalf("Expected player to have moved west, position is: %v x %v", p.Pos.X, p.Pos.Y)
@@ -61,49 +61,49 @@ func TestPlayer_Move(t *testing.T) {
 
 func TestPlayer_Rotate(t *testing.T) {
 	testCases := []struct {
-		direction string
+		direction Direction
 		rotate    string
-		expected  string
+		expected  Direction
 	}{
 		{
-			direction: "NORTH",
+			direction: North,
 			rotate:    "LEFT",
-			expected:  "WEST",
+			expected:  West,
 		},
 		{
-			direction: "NORTH",
+			direction: North,
 			rotate:    "RIGHT",
-			expected:  "EAST",
+			expected:  East,
 		},
 		{
-			direction: "SOUTH",
+			direction: South,
 			rotate:    "LEFT",
-			expected:  "EAST",
+			expected:  East,
 		},
 		{
-			direction: "SOUTH",
+			direction: South,
 			rotate:    "RIGHT",
-			expected:  "WEST",
+			expected:  West,
 		},
 		{
-			direction: "EAST",
+			direction: East,
 			rotate:    "LEFT",
-			expected:  "NORTH",
+			expected:  North,
 		},
 		{
-			direction: "EAST",
+			direction: East,
 			rotate:    "RIGHT",
-			expected:  "SOUTH",
+			expected:  South,
 		},
 		{
-			direction: "WEST",
+			direction: West,
 			rotate:    "LEFT",
-			expected:  "SOUTH",
+			expected:  South,
 		},
 		{
-			direction: "WEST",
+			direction: West,
 			rotate:    "RIGHT",
-			expected:  "NORTH",
+			expected:  North,
 		},
 	}
 	for _, tC := range testCases {
@@ -118,8 +118,8 @@ func TestPlayer_Rotate(t *testing.T) {
 	}
 }
 
-func ExampleTestPlayer_String() {
-	fmt.Print(NewPlayer("Harry", 0, 0, "WEST"))
+func ExamplePlayer_String() {
+	fmt.Print(NewPlayer("Harry", 0, 0, West))
 	// Output:
 	// Harry: 0,0,WEST
 }
