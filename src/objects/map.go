@@ -37,22 +37,30 @@ func NewMap(size int) (*Map, error) {
 }
 
 // AddPlayer adds a new player to the map
-func (m *Map) AddPlayer(p Player) {
-	if m.hasPlayer(p) {
+func (m *Map) AddPlayer(p *Player) {
+	if m.FindPlayerByName(p.Name) != nil {
 		log.Printf("Player %v already in map, skipping\n", p)
 		return
 	}
 
-	m.Players = append(m.Players, &p)
+	m.Players = append(m.Players, p)
 }
 
-// hasPlayer returns true/false if the player has laready been placed in the map
-func (m *Map) hasPlayer(p Player) bool {
+// FindPlayerByName returns the player if the player with the given name
+// has laready been placed in the map
+func (m *Map) FindPlayerByName(name string) *Player {
 	for _, player := range m.Players {
-		fmt.Println(p.Name, player.Name)
-		if player.Name == p.Name {
-			return true
+		if player.Name == name {
+			return player
 		}
 	}
-	return false
+	return nil
+}
+
+func (m *Map) String() string {
+	var s string
+	for _, p := range m.Players {
+		s += fmt.Sprintln(p)
+	}
+	return s
 }

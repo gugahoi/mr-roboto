@@ -58,7 +58,7 @@ func TestAddPlayer(t *testing.T) {
 		"EAST",
 	)
 
-	m.AddPlayer(*p)
+	m.AddPlayer(p)
 	if size := len(m.Players); size != 1 {
 		t.Fatalf("Expected to have %v players, got %v", 1, size)
 	}
@@ -77,8 +77,8 @@ func TestAddSamePlayer(t *testing.T) {
 		"EAST",
 	)
 
-	m.AddPlayer(*p)
-	m.AddPlayer(*p)
+	m.AddPlayer(p)
+	m.AddPlayer(p)
 	if size := len(m.Players); size != 1 {
 		t.Fatalf("Expected to have %v players, got %v", 1, size)
 	}
