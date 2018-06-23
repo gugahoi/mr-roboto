@@ -1,9 +1,9 @@
-package objects_test
+package main_test
 
 import (
 	"testing"
 
-	"github.com/gugahoi/mr-roboto/src/objects"
+	. "github.com/gugahoi/mr-roboto/src"
 )
 
 func TestNewMap(t *testing.T) {
@@ -30,7 +30,7 @@ func TestNewMap(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
-			m, err := objects.NewMap(tC.size)
+			m, err := NewMap(tC.size)
 
 			if tC.err {
 				if err == nil {
@@ -46,12 +46,12 @@ func TestNewMap(t *testing.T) {
 }
 
 func TestAddPlayer(t *testing.T) {
-	m := objects.Map{
+	m := Map{
 		Size:    10,
-		Players: []*objects.Player{},
+		Players: []*Player{},
 	}
 
-	p := objects.NewPlayer(
+	p := NewPlayer(
 		"Mary",
 		0,
 		0,
@@ -65,12 +65,12 @@ func TestAddPlayer(t *testing.T) {
 }
 
 func TestAddSamePlayer(t *testing.T) {
-	m := objects.Map{
+	m := Map{
 		Size:    10,
-		Players: []*objects.Player{},
+		Players: []*Player{},
 	}
 
-	p := objects.NewPlayer(
+	p := NewPlayer(
 		"Mary",
 		0,
 		0,

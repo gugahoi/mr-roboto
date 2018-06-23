@@ -1,10 +1,10 @@
-package objects_test
+package main_test
 
 import (
 	"fmt"
 	"testing"
 
-	"github.com/gugahoi/mr-roboto/src/objects"
+	. "github.com/gugahoi/mr-roboto/src"
 )
 
 func TestNewPlayer(t *testing.T) {
@@ -13,7 +13,7 @@ func TestNewPlayer(t *testing.T) {
 	y := 5
 	direction := "EAST"
 
-	p := objects.NewPlayer(name, x, y, direction)
+	p := NewPlayer(name, x, y, direction)
 	if p.Name != name {
 		t.Fatalf("Expected player name to be '%v', got '%v'", name, p.Name)
 	}
@@ -22,8 +22,8 @@ func TestNewPlayer(t *testing.T) {
 	}
 }
 
-func TestMove(t *testing.T) {
-	p := objects.NewPlayer("Shish", 0, 0, "NORTH")
+func TestPlayer_Move(t *testing.T) {
+	p := NewPlayer("Shish", 0, 0, "NORTH")
 
 	p.Move()
 	if p.Pos.Y != 1 {
@@ -53,7 +53,7 @@ func TestMove(t *testing.T) {
 	}
 }
 
-func TestRotate(t *testing.T) {
+func TestPlayer_Rotate(t *testing.T) {
 	testCases := []struct {
 		direction string
 		rotate    string
@@ -102,7 +102,7 @@ func TestRotate(t *testing.T) {
 	}
 	for _, tC := range testCases {
 		t.Run(fmt.Sprintf("player is facing %s rotates %s", tC.direction, tC.rotate), func(t *testing.T) {
-			p := objects.NewPlayer("Test", 0, 0, tC.direction)
+			p := NewPlayer("Test", 0, 0, tC.direction)
 			p.Rotate(tC.rotate)
 
 			if p.Direction != tC.expected {
@@ -112,8 +112,8 @@ func TestRotate(t *testing.T) {
 	}
 }
 
-func TestString(t *testing.T) {
-	p := objects.NewPlayer("Harry", 0, 0, "WEST")
+func TestPlayer_String(t *testing.T) {
+	p := NewPlayer("Harry", 0, 0, "WEST")
 	expected := "Harry: 0,0,WEST"
 	if p.String() != expected {
 		t.Fatalf("Expected string to be: \n%v\n got: \n%v\n", expected, p.String())
