@@ -30,17 +30,15 @@ func TestMap_AddPlayer(t *testing.T) {
 
 	p := NewPlayer(
 		"Mary",
-		0,
-		0,
 		East,
 	)
 
-	err := m.AddPlayer(p)
+	err := m.AddPlayer(p, 0, 0)
 	if err != nil {
 		t.Fatalf("Expected player to be added, got err '%v'", err)
 	}
 
-	err = m.AddPlayer(p)
+	err = m.AddPlayer(p, 0, 0)
 	if err == nil {
 		t.Fatalf("Expected not to be able to add player, did not get err")
 	}
@@ -48,9 +46,9 @@ func TestMap_AddPlayer(t *testing.T) {
 
 func ExampleMap_String() {
 	m := NewMap()
-	m.AddPlayer(NewPlayer("Joe", 0, 0, East))
-	m.AddPlayer(NewPlayer("Mary", 1, 0, West))
-	m.AddPlayer(NewPlayer("Moses", 5, 2, North))
+	m.AddPlayer(NewPlayer("Joe", East), 0, 0)
+	m.AddPlayer(NewPlayer("Mary", West), 1, 0)
+	m.AddPlayer(NewPlayer("Moses", North), 5, 2)
 
 	fmt.Print(m)
 	// Output:
@@ -64,17 +62,10 @@ func TestMap_Run(t *testing.T) {
 	c := Command{Action: "PLACE", Args: []string{"0", "0", "EAST"}, Name: "DAVE"}
 	m.Run(c)
 
-	p := m.FindPlayerByName("DAVE")
+	p, _, _ := m.FindPlayerByName("DAVE")
 	if p == nil {
 		t.Fatal("Expected to find player 'DAVE' but didn't")
 	}
-	if p.Pos.X != 0 {
-		t.Fatalf("Expected player 'DAVE' to be at x coordinate '0', found '%v", p.Pos.X)
-	}
-	if p.Pos.Y != 0 {
-		t.Fatalf("Expected player 'DAVE' to be at Y coordinate '0', found '%v", p.Pos.Y)
-	}
-	// TODO: fix this direction
 	if p.Direction != East {
 		t.Fatalf("Expected player 'DAVE' to be facing '%v', found '%v", East, p.Direction)
 	}
