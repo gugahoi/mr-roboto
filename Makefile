@@ -7,7 +7,10 @@ test:
 	go test -v ./...
 
 build:
+	go build -o build/mr-roboto ./...
+
+docker-build:
 	docker build -t $(REPOSITORY):$(TAG) .
 
-run: build
+docker-run: docker-build
 	docker run $(REPOSITORY):$(TAG)
