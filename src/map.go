@@ -80,7 +80,7 @@ func (m *Map) Run(c Command) {
 	case "REPORT":
 		m.Report(c.Name)
 	case "MOVE":
-		// m.FindPlayerByName(c.Name).Move()
+		m.Move(c.Name)
 	case "LEFT", "RIGHT":
 		p, _, _ := m.FindPlayerByName(c.Name)
 		p.Rotate(c.Action)
@@ -93,4 +93,38 @@ func (m *Map) Report(name string) {
 	if p != nil {
 		fmt.Printf("%s: %d,%d,%s\n", p.Name, x, y, p.Direction)
 	}
+}
+
+// Move ...
+func (m *Map) Move(name string) {
+	p, x, y := m.FindPlayerByName(name)
+	if p != nil {
+		nextX, nextY := nextPosition(p.Direction, x, y)
+		if m.Players[nextX][nextY] == nil {
+			m.Players[x][y] = nil
+			m.Players[nextX][nextY] = p
+		}
+	}
+}
+
+func nextPosition(d Direction, x, y int) (int, int) {
+	switch d {
+	case North:
+		if y < 5 {
+			y++
+		}
+	case South:
+		if y > 0 {
+			y--
+		}
+	case East:
+		if x < 5 {
+			x++
+		}
+	case West:
+		if x > 0 {
+			x--
+		}
+	}
+	return x, y
 }
