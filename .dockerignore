@@ -1,5 +1,6 @@
 LICENSE
 Dockerfile
 README.md
-.gitignore
 Makefile
+.git
+.gitignore
