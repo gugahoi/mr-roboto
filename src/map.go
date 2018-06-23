@@ -50,7 +50,7 @@ func (m *Map) AddPlayer(p *Player) {
 }
 
 // FindPlayerByName returns the player if the player with the given name
-// has laready been placed in the map
+// has already been placed in the map
 func (m *Map) FindPlayerByName(name string) *Player {
 	for _, player := range m.Players {
 		if player.Name == name {
