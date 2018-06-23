@@ -5,9 +5,11 @@ import (
 	"log"
 )
 
+const size = 6
+
 // Map contains the players in the game
 type Map struct {
-	Players [6][6]*Player
+	Players [size][size]*Player
 }
 
 // Map Layout (x,y)
@@ -28,7 +30,7 @@ type Map struct {
 // NewMap creates a new map of given size (square map)
 func NewMap() *Map {
 	return &Map{
-		Players: [6][6]*Player{},
+		Players: [size][size]*Player{},
 	}
 }
 
@@ -117,7 +119,7 @@ func (m *Map) Move(name string) {
 func nextPosition(d Direction, x, y int) (int, int) {
 	switch d {
 	case North:
-		if y < 5 {
+		if y < size-1 {
 			y++
 		}
 	case South:
@@ -125,7 +127,7 @@ func nextPosition(d Direction, x, y int) (int, int) {
 			y--
 		}
 	case East:
-		if x < 5 {
+		if x < size-1 {
 			x++
 		}
 	case West:
