@@ -1,7 +1,5 @@
 package main
 
-import "fmt"
-
 // Player should be an interface for extensibility and testability?
 
 // Player represents a player in the map with name, position and direction it is facing
@@ -50,13 +48,4 @@ func (p *Player) Rotate(to string) {
 			p.Direction = North
 		}
 	}
-}
-
-func (p *Player) String() string {
-	return fmt.Sprintf("%s: %s", p.Name, p.Direction)
-}
-
-// Report prints the player information
-func (p *Player) Report() {
-	fmt.Println(p)
 }

@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 )
 
 // Map contains the players in the game
@@ -87,7 +88,7 @@ func (m *Map) Run(c Command) {
 	}
 }
 
-// Report ...
+// Report prints the player report including name, position and direction
 func (m *Map) Report(name string) {
 	p, x, y := m.FindPlayerByName(name)
 	if p != nil {
@@ -95,16 +96,22 @@ func (m *Map) Report(name string) {
 	}
 }
 
-// Move ...
+// Move moves the player by name if available
 func (m *Map) Move(name string) {
 	p, x, y := m.FindPlayerByName(name)
-	if p != nil {
-		nextX, nextY := nextPosition(p.Direction, x, y)
-		if m.Players[nextX][nextY] == nil {
-			m.Players[x][y] = nil
-			m.Players[nextX][nextY] = p
-		}
+	if p == nil {
+		log.Println("Player not found, skipping move")
+		return
 	}
+
+	nextX, nextY := nextPosition(p.Direction, x, y)
+	if m.Players[nextX][nextY] != nil {
+		log.Printf("Position already taken by %v, skipping move\n", m.Players[nextX][nextY].Name)
+		return
+	}
+
+	m.Players[x][y] = nil
+	m.Players[nextX][nextY] = p
 }
 
 func nextPosition(d Direction, x, y int) (int, int) {

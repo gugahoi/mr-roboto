@@ -78,9 +78,3 @@ func TestPlayer_Rotate(t *testing.T) {
 		})
 	}
 }
-
-func ExamplePlayer_String() {
-	fmt.Print(NewPlayer("Harry", West))
-	// Output:
-	// Harry: WEST
-}
