@@ -2,27 +2,35 @@ package main
 
 import (
 	"bufio"
+	"fmt"
+	"io/ioutil"
+	"log"
+	"os"
 	"strings"
 )
 
-func main() {
+func init() {
+	if len(os.Args) != 2 {
+		usage()
+	}
+}
 
-	input := `ALICE: PLACE 1,2,EAST
-ALICE: MOVE
-ALICE: MOVE
-ALICE: LEFT
-BOB: PLACE 3,3,EAST
-BOB: MOVE
-ALICE: MOVE
-ALICE: REPORT
-BOB: RIGHT
-BOB: MOVE
-BOB: REPORT
-`
-	scanner := bufio.NewScanner(strings.NewReader(input))
+func main() {
+	content, err := ioutil.ReadFile(os.Args[1])
+	if err != nil {
+		log.Fatal(err)
+	}
+	scanner := bufio.NewScanner(strings.NewReader(string(content)))
 	m, _ := NewMap(6)
 	for scanner.Scan() {
 		c := Parse(scanner.Text())
 		m.Run(c)
 	}
+}
+
+func usage() {
+	fmt.Fprintf(os.Stderr, `Usage:
+	%s path/to/file.txt
+`, os.Args[0])
+	os.Exit(0)
 }

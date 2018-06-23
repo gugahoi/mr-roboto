@@ -2,6 +2,7 @@ package main
 
 import (
 	"regexp"
+	"strconv"
 )
 
 // Command represents 1 line of input
@@ -21,4 +22,11 @@ func Parse(line string) Command {
 	}
 
 	return c
+}
+
+// ParseArgs ...
+func ParseArgs(a []string) (int, int, Direction) {
+	x, _ := strconv.Atoi(a[0])
+	y, _ := strconv.Atoi(a[1])
+	return x, y, StringToDirection(a[2])
 }

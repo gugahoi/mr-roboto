@@ -72,7 +72,8 @@ func (m *Map) String() string {
 func (m *Map) Run(c Command) {
 	switch c.Action {
 	case "PLACE":
-		m.AddPlayer(NewPlayer(c.Name, 0, 0, StringToDirection(c.Args[2])))
+		x, y, d := ParseArgs(c.Args)
+		m.AddPlayer(NewPlayer(c.Name, x, y, d))
 	case "REPORT":
 		m.FindPlayerByName(c.Name).Report()
 	case "MOVE":
