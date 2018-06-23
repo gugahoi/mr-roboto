@@ -87,6 +87,8 @@ func (m *Map) Run(c Command) {
 	case "LEFT", "RIGHT":
 		p, _, _ := m.FindPlayerByName(c.Name)
 		p.Rotate(c.Action)
+	default:
+		log.Printf("Unsuported command: %v\n", c.Action)
 	}
 }
 

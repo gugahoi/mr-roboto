@@ -1,6 +1,7 @@
 package main
 
 import (
+	"log"
 	"regexp"
 	"strconv"
 )
@@ -15,6 +16,10 @@ type Command struct {
 // Parse takes in 1 line and converts it to a command
 func Parse(line string) Command {
 	s := regexp.MustCompile(": | |,").Split(line, -1)
+	if len(s) < 2 {
+		log.Printf("unable to parse command: '%v'", line)
+		return Command{}
+	}
 	c := Command{
 		Name:   s[0],
 		Action: s[1],
