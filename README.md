@@ -23,6 +23,17 @@ valid movement commands must still be allowed.
 * A toy robot must not hit the edges of the board during movement, including when the robot is initially placed on the board.
 * Any move that would cause the robot to fall off the edge of the board or collide with another robot must be ignored.
 
+## Downloading
+
+To run the latest release, simply download the executable from the [GiHub Releases page](https://github.com/gugahoi/mr-roboto/releases/latest), make it executable and run the binary:
+
+```bash
+# with an input file
+mr-roboto testdata/example1.txt
+# from stdin
+mr-roboto
+```
+
 ## Development
 
 ```bash

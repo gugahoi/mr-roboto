@@ -1,0 +1,9 @@
+builds:
+- binary: mr-roboto
+  main: ./src/
+  goos:
+  - windows
+  - darwin
+  - linux
+  goarch:
+  - amd64
