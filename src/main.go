@@ -10,14 +10,8 @@ import (
 )
 
 func main() {
-	// set up input
-	var i string
-	if len(os.Args) == 2 {
-		i = os.Args[1]
-	}
-	scanner := bufio.NewScanner(input(i))
-
 	// run the game
+	scanner := bufio.NewScanner(Input(os.Args))
 	m := NewMap()
 	for scanner.Scan() {
 		c := Parse(scanner.Text())
@@ -25,13 +19,15 @@ func main() {
 	}
 }
 
-func input(file string) io.Reader {
-	if file != "" {
-		content, err := ioutil.ReadFile(file)
-		if err != nil {
-			log.Fatal(err)
-		}
-		return strings.NewReader(string(content))
+// Input reads the first argument passed in as a file.
+// If no arguments it reads continually from STDIN.
+func Input(args []string) io.Reader {
+	if len(args) < 2 {
+		return os.Stdin
 	}
-	return os.Stdin
+	content, err := ioutil.ReadFile(args[1])
+	if err != nil {
+		log.Fatal(err)
+	}
+	return strings.NewReader(string(content))
 }

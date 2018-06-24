@@ -35,6 +35,12 @@ func TestParse(t *testing.T) {
 			action: "REPORT",
 			args:   []string{},
 		},
+		{
+			desc:   "INVALID~COMMAND:::::123123",
+			name:   "",
+			action: "",
+			args:   []string{},
+		},
 	}
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {

@@ -1,8 +1,40 @@
 package main_test
 
 import (
+	"io"
+	"os"
+	"testing"
+
 	. "github.com/gugahoi/mr-roboto/src"
 )
+
+func TestInput(t *testing.T) {
+	testCases := []struct {
+		desc     string
+		args     []string
+		expected io.Reader
+	}{
+		{
+			desc:     "No input should read from stdin",
+			args:     []string{"program"},
+			expected: os.Stdin,
+		},
+		// TODO: mock the file to test
+		// {
+		// 	desc:     "Input should reaturn the first file",
+		// 	args:     []string{"program", "inputFile"},
+		// 	expected: os.Stdin,
+		// },
+	}
+	for _, tC := range testCases {
+		t.Run(tC.desc, func(t *testing.T) {
+			got := Input(tC.args)
+			if got != tC.expected {
+				t.Fatalf("Expected %v, got %v", tC.expected, got)
+			}
+		})
+	}
+}
 
 func Example_Scenario1() {
 	// scenario 1
