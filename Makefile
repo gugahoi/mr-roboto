@@ -16,4 +16,4 @@ docker-build:
 	docker build -t $(REPOSITORY):$(TAG) .
 
 docker-run: docker-build
-	docker run $(REPOSITORY):$(TAG)
+	docker run -it $(REPOSITORY):$(TAG)

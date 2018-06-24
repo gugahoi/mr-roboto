@@ -37,6 +37,14 @@ func NewMap() *Map {
 // AddPlayer adds a new player to the map, unless a player of same name already exists
 // or the chosen location is already taken
 func (m *Map) AddPlayer(p *Player, x, y int) error {
+	if x < 0 || x >= size {
+		return fmt.Errorf("Invalid x coordinate: %v", x)
+	}
+
+	if y < 0 || y >= size {
+		return fmt.Errorf("Invalid y coordinate: %v", y)
+	}
+
 	if p, _, _ := m.FindPlayerByName(p.Name); p != nil {
 		return fmt.Errorf("player %v already in map, skipping", p)
 	}
@@ -86,7 +94,9 @@ func (m *Map) Run(c Command) {
 		m.Move(c.Name)
 	case "LEFT", "RIGHT":
 		p, _, _ := m.FindPlayerByName(c.Name)
-		p.Rotate(c.Action)
+		if p != nil {
+			p.Rotate(c.Action)
+		}
 	default:
 		log.Printf("Unsuported command: %v\n", c.Action)
 	}

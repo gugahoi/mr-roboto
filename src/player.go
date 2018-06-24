@@ -1,7 +1,5 @@
 package main
 
-// Player should be an interface for extensibility and testability?
-
 // Player represents a player in the map with name, position and direction it is facing
 type Player struct {
 	Name      string

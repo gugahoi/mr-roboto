@@ -29,7 +29,7 @@ func Parse(line string) Command {
 	return c
 }
 
-// ParseArgs ...
+// ParseArgs parses the arguments for the PLACE command
 func ParseArgs(a []string) (int, int, Direction) {
 	x, _ := strconv.Atoi(a[0])
 	y, _ := strconv.Atoi(a[1])

@@ -48,6 +48,15 @@ func TestMap_AddPlayer(t *testing.T) {
 		t.Fatalf("Expected not to be able to add player, did not get err")
 	}
 
+	err = m.AddPlayer(NewPlayer("Tristan", East), -1, 0)
+	if err == nil {
+		t.Fatalf("Expected not to be able to add player as x is out of bounds, did not get err")
+	}
+
+	err = m.AddPlayer(NewPlayer("Tristan", East), 1, -1)
+	if err == nil {
+		t.Fatalf("Expected not to be able to add player as y is out of bounds, did not get err")
+	}
 }
 
 func ExampleMap_String() {
