@@ -1,7 +1,6 @@
 package main_test
 
 import (
-	"fmt"
 	"testing"
 
 	. "github.com/gugahoi/mr-roboto/src"
@@ -58,20 +57,6 @@ func TestMap_AddPlayer(t *testing.T) {
 		t.Fatalf("Expected not to be able to add player as y is out of bounds, did not get err")
 	}
 }
-
-func ExampleMap_String() {
-	m := NewMap()
-	m.AddPlayer(NewPlayer("Joe", East), [2]int{0, 0})
-	m.AddPlayer(NewPlayer("Mary", West), [2]int{1, 0})
-	m.AddPlayer(NewPlayer("Moses", North), [2]int{5, 2})
-
-	fmt.Print(m)
-	// Output:
-	// Joe: 0,0,EAST
-	// Mary: 1,0,WEST
-	// Moses: 5,2,NORTH
-}
-
 func TestMap_Run(t *testing.T) {
 	cases := []struct {
 		command   Command

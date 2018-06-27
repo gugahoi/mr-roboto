@@ -68,14 +68,6 @@ func (m *Map) FindPlayerByName(name string) (*Player, *[2]int) {
 	return nil, nil
 }
 
-func (m *Map) String() string {
-	var s string
-	for pos, player := range m.Players {
-		s += fmt.Sprintf("%s: %d,%d,%s\n", player.Name, pos[0], pos[1], player.Direction)
-	}
-	return s
-}
-
 // Run runs a given command from the current state of the map
 func (m *Map) Run(c Command) {
 	switch c.Action {
