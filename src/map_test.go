@@ -25,7 +25,7 @@ func TestNewMap(t *testing.T) {
 
 func TestMap_AddPlayer(t *testing.T) {
 	m := Map{
-		Players: [6][6]*Player{},
+		Players: make(map[[2]int]*Player),
 	}
 
 	p := NewPlayer(
@@ -33,27 +33,27 @@ func TestMap_AddPlayer(t *testing.T) {
 		East,
 	)
 
-	err := m.AddPlayer(p, 0, 0)
+	err := m.AddPlayer(p, [2]int{0, 0})
 	if err != nil {
 		t.Fatalf("Expected player to be added, got err '%v'", err)
 	}
 
-	err = m.AddPlayer(p, 2, 3)
+	err = m.AddPlayer(p, [2]int{2, 3})
 	if err == nil {
 		t.Fatalf("Expected not to be able to add player, did not get err")
 	}
 
-	err = m.AddPlayer(NewPlayer("Kaleb", West), 0, 0)
+	err = m.AddPlayer(NewPlayer("Kaleb", West), [2]int{0, 0})
 	if err == nil {
 		t.Fatalf("Expected not to be able to add player, did not get err")
 	}
 
-	err = m.AddPlayer(NewPlayer("Tristan", East), -1, 0)
+	err = m.AddPlayer(NewPlayer("Tristan", East), [2]int{-1, 0})
 	if err == nil {
 		t.Fatalf("Expected not to be able to add player as x is out of bounds, did not get err")
 	}
 
-	err = m.AddPlayer(NewPlayer("Tristan", East), 1, -1)
+	err = m.AddPlayer(NewPlayer("Tristan", East), [2]int{1, -1})
 	if err == nil {
 		t.Fatalf("Expected not to be able to add player as y is out of bounds, did not get err")
 	}
@@ -61,9 +61,9 @@ func TestMap_AddPlayer(t *testing.T) {
 
 func ExampleMap_String() {
 	m := NewMap()
-	m.AddPlayer(NewPlayer("Joe", East), 0, 0)
-	m.AddPlayer(NewPlayer("Mary", West), 1, 0)
-	m.AddPlayer(NewPlayer("Moses", North), 5, 2)
+	m.AddPlayer(NewPlayer("Joe", East), [2]int{0, 0})
+	m.AddPlayer(NewPlayer("Mary", West), [2]int{1, 0})
+	m.AddPlayer(NewPlayer("Moses", North), [2]int{5, 2})
 
 	fmt.Print(m)
 	// Output:
@@ -120,15 +120,15 @@ func TestMap_Run(t *testing.T) {
 	// Note these cases are run in sequence
 	for _, c := range cases {
 		m.Run(c.command)
-		p, x, y := m.FindPlayerByName("DAVE")
+		p, pos := m.FindPlayerByName("DAVE")
 		if p.Direction != c.direction {
 			t.Fatalf("Expected player 'DAVE' to be facing '%v', found '%v", c.direction, p.Direction)
 		}
-		if x != c.x {
-			t.Fatalf("Expected player 'DAVE' to have x position '%v', found '%v", c.x, x)
+		if pos[0] != c.x {
+			t.Fatalf("Expected player 'DAVE' to have x position '%v', found '%v", c.x, pos[0])
 		}
-		if y != c.y {
-			t.Fatalf("Expected player 'DAVE' to have y position '%v', found '%v", c.y, y)
+		if pos[1] != c.y {
+			t.Fatalf("Expected player 'DAVE' to have y position '%v', found '%v", c.y, pos[1])
 		}
 	}
 }
@@ -184,16 +184,16 @@ func TestMap_Move(t *testing.T) {
 	for _, tC := range testCases {
 		t.Run(tC.desc, func(t *testing.T) {
 			m := NewMap()
-			m.AddPlayer(NewPlayer("Hazard", tC.d), tC.startX, tC.startY)
-			m.AddPlayer(NewPlayer("Lukaku", North), 1, 0)
+			m.AddPlayer(NewPlayer("Hazard", tC.d), [2]int{tC.startX, tC.startY})
+			m.AddPlayer(NewPlayer("Lukaku", North), [2]int{1, 0})
 
 			m.Move("Hazard")
-			_, x, y := m.FindPlayerByName("Hazard")
-			if x != tC.expectedX {
-				t.Fatalf("Expected player to have moved in x coordinate to %v, got %v", tC.expectedX, x)
+			_, pos := m.FindPlayerByName("Hazard")
+			if pos[0] != tC.expectedX {
+				t.Fatalf("Expected player to have moved in x coordinate to %v, got %v", tC.expectedX, pos[0])
 			}
-			if y != tC.expectedY {
-				t.Fatalf("Expected player to have moved in y coordinate to %v, got %v", tC.expectedY, y)
+			if pos[1] != tC.expectedY {
+				t.Fatalf("Expected player to have moved in y coordinate to %v, got %v", tC.expectedY, pos[1])
 			}
 			m.Move("Lee")
 		})

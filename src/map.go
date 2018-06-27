@@ -9,12 +9,12 @@ const size = 6
 
 // Map contains the players in the game
 type Map struct {
-	Players [size][size]*Player
+	Players map[[2]int]*Player
 }
 
-// Map Layout (x,y)
-// x coordinate is west -> east incrementally
-// y coordinate is south -> north incrementally
+// Map Layout (X,Y)
+// X coordinate is west -> east incrementally
+// Y coordinate is south -> north incrementally
 //                         NORTH
 //   | 0,N-1 | 1,N-1 | 2,N-1 | 3,N-1 | 4,N-1 | N-1,N-1 |
 //	 |   .	 |   .   |   .   |   .   |   .   |   .     |
@@ -30,54 +30,48 @@ type Map struct {
 // NewMap creates a new map of given size (square map)
 func NewMap() *Map {
 	return &Map{
-		Players: [size][size]*Player{},
+		Players: make(map[[2]int]*Player),
 	}
 }
 
 // AddPlayer adds a new player to the map, unless a player of same name already exists
 // or the chosen location is already taken
-func (m *Map) AddPlayer(p *Player, x, y int) error {
-	if x < 0 || x >= size {
-		return fmt.Errorf("Invalid x coordinate: %v", x)
+func (m *Map) AddPlayer(p *Player, pos [2]int) error {
+	if pos[0] < 0 || pos[0] >= size {
+		return fmt.Errorf("Invalid X coordinate: %v", pos[0])
 	}
 
-	if y < 0 || y >= size {
-		return fmt.Errorf("Invalid y coordinate: %v", y)
+	if pos[1] < 0 || pos[1] >= size {
+		return fmt.Errorf("Invalid Y coordinate: %v", pos[1])
 	}
 
-	if p, _, _ := m.FindPlayerByName(p.Name); p != nil {
+	if p, _ := m.FindPlayerByName(p.Name); p != nil {
 		return fmt.Errorf("player %v already in map, skipping", p)
 	}
 
-	if m.Players[x][y] != nil {
-		return fmt.Errorf("location not empty: (%v,%v) %v", x, y, p.Name)
+	if _, ok := m.Players[pos]; ok {
+		return fmt.Errorf("location not empty: (%v) %v", pos, p.Name)
 	}
 
-	m.Players[x][y] = p
+	m.Players[pos] = p
 	return nil
 }
 
 // FindPlayerByName returns the player if the player with the given name
 // has already been placed in the map
-func (m *Map) FindPlayerByName(name string) (*Player, int, int) {
-	for x, row := range m.Players {
-		for y, player := range row {
-			if player != nil && player.Name == name {
-				return player, x, y
-			}
+func (m *Map) FindPlayerByName(name string) (*Player, *[2]int) {
+	for pos, player := range m.Players {
+		if player != nil && player.Name == name {
+			return player, &pos
 		}
 	}
-	return nil, 0, 0
+	return nil, nil
 }
 
 func (m *Map) String() string {
 	var s string
-	for x, row := range m.Players {
-		for y, player := range row {
-			if player != nil {
-				s += fmt.Sprintf("%s: %d,%d,%s\n", player.Name, x, y, player.Direction)
-			}
-		}
+	for pos, player := range m.Players {
+		s += fmt.Sprintf("%s: %d,%d,%s\n", player.Name, pos[0], pos[1], player.Direction)
 	}
 	return s
 }
@@ -86,14 +80,14 @@ func (m *Map) String() string {
 func (m *Map) Run(c Command) {
 	switch c.Action {
 	case "PLACE":
-		x, y, d := ParseArgs(c.Args)
-		m.AddPlayer(NewPlayer(c.Name, d), x, y)
+		X, Y, d := ParseArgs(c.Args)
+		m.AddPlayer(NewPlayer(c.Name, d), [2]int{X, Y})
 	case "REPORT":
 		m.Report(c.Name)
 	case "MOVE":
 		m.Move(c.Name)
 	case "LEFT", "RIGHT":
-		p, _, _ := m.FindPlayerByName(c.Name)
+		p, _ := m.FindPlayerByName(c.Name)
 		if p != nil {
 			p.Rotate(c.Action)
 		}
@@ -104,48 +98,48 @@ func (m *Map) Run(c Command) {
 
 // Report prints the player report including name, position and direction
 func (m *Map) Report(name string) {
-	p, x, y := m.FindPlayerByName(name)
+	p, pos := m.FindPlayerByName(name)
 	if p != nil {
-		fmt.Printf("%s: %d,%d,%s\n", p.Name, x, y, p.Direction)
+		fmt.Printf("%s: %d,%d,%s\n", p.Name, pos[0], pos[1], p.Direction)
 	}
 }
 
 // Move moves the player by name if available
 func (m *Map) Move(name string) {
-	p, x, y := m.FindPlayerByName(name)
+	p, pos := m.FindPlayerByName(name)
 	if p == nil {
 		log.Println("Player not found, skipping move")
 		return
 	}
 
-	nextX, nextY := nextPosition(p.Direction, x, y)
-	if m.Players[nextX][nextY] != nil {
-		log.Printf("Position already taken by %v, skipping move\n", m.Players[nextX][nextY].Name)
+	nextPos := nextPosition(p.Direction, *pos)
+	if _, ok := m.Players[nextPos]; ok {
+		log.Printf("Position already taken by %v, skipping move\n", m.Players[nextPos].Name)
 		return
 	}
 
-	m.Players[x][y] = nil
-	m.Players[nextX][nextY] = p
+	delete(m.Players, *pos)
+	m.Players[nextPos] = p
 }
 
-func nextPosition(d Direction, x, y int) (int, int) {
+func nextPosition(d Direction, pos [2]int) [2]int {
 	switch d {
 	case North:
-		if y < size-1 {
-			y++
+		if pos[1] < size-1 {
+			pos[1]++
 		}
 	case South:
-		if y > 0 {
-			y--
+		if pos[1] > 0 {
+			pos[1]--
 		}
 	case East:
-		if x < size-1 {
-			x++
+		if pos[0] < size-1 {
+			pos[0]++
 		}
 	case West:
-		if x > 0 {
-			x--
+		if pos[0] > 0 {
+			pos[0]--
 		}
 	}
-	return x, y
+	return pos
 }

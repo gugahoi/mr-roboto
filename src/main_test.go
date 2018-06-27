@@ -40,7 +40,7 @@ func Example_Scenario1() {
 	// scenario 1
 	m := NewMap()
 	// ALICE: PLACE 0,0,NORTH
-	m.AddPlayer(NewPlayer("ALICE", North), 0, 0)
+	m.AddPlayer(NewPlayer("ALICE", North), [2]int{0, 0})
 	// ALICE: MOVE
 	m.Move("ALICE")
 	// ALICE: REPORT
@@ -53,9 +53,9 @@ func Example_Scenario2() {
 	// scenario 2
 	m := NewMap()
 	// BOB: PLACE 0,0,NORTH
-	m.AddPlayer(NewPlayer("BOB", North), 0, 0)
+	m.AddPlayer(NewPlayer("BOB", North), [2]int{0, 0})
 	// BOB: LEFT
-	p, _, _ := m.FindPlayerByName("BOB")
+	p, _ := m.FindPlayerByName("BOB")
 	p.Rotate("LEFT")
 	// BOB: REPORT
 	m.Report("BOB")
@@ -68,16 +68,16 @@ func Example_Scenario3() {
 	// scenario 3
 	m := NewMap()
 	// ALICE: PLACE 1,2,EAST
-	m.AddPlayer(NewPlayer("ALICE", East), 1, 2)
+	m.AddPlayer(NewPlayer("ALICE", East), [2]int{1, 2})
 	// ALICE: MOVE
 	m.Move("ALICE")
 	// ALICE: MOVE
 	m.Move("ALICE")
 	// ALICE: LEFT
-	p, _, _ := m.FindPlayerByName("ALICE")
+	p, _ := m.FindPlayerByName("ALICE")
 	p.Rotate("LEFT")
 	// BOB: PLACE 3,3,EAST
-	m.AddPlayer(NewPlayer("BOB", East), 3, 3)
+	m.AddPlayer(NewPlayer("BOB", East), [2]int{3, 3})
 	// BOB: MOVE
 	m.Move("BOB")
 	// ALICE: MOVE
@@ -85,7 +85,7 @@ func Example_Scenario3() {
 	// ALICE: REPORT
 	m.Report("ALICE")
 	// BOB: RIGHT
-	p, _, _ = m.FindPlayerByName("BOB")
+	p, _ = m.FindPlayerByName("BOB")
 	p.Rotate("RIGHT")
 	// BOB: MOVE
 	m.Move("BOB")
@@ -100,9 +100,9 @@ func Example_Scenario4() {
 	// scenario 4
 	m := NewMap()
 	// BOB: PLACE 1,3,SOUTH
-	m.AddPlayer(NewPlayer("BOB", South), 1, 3)
+	m.AddPlayer(NewPlayer("BOB", South), [2]int{1, 3})
 	// ALICE: PLACE 0,1,EAST
-	m.AddPlayer(NewPlayer("ALICE", East), 0, 1)
+	m.AddPlayer(NewPlayer("ALICE", East), [2]int{0, 1})
 	// ALICE: MOVE
 	m.Move("ALICE")
 	// BOB: MOVE
@@ -114,7 +114,7 @@ func Example_Scenario4() {
 	// BOB: MOVE
 	m.Move("BOB")
 	// BOB: LEFT
-	p, _, _ := m.FindPlayerByName("BOB")
+	p, _ := m.FindPlayerByName("BOB")
 	p.Rotate("LEFT")
 	// ALICE: REPORT
 	m.Report("ALICE")
